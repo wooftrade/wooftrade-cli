@@ -14,6 +14,17 @@ import { txStatus } from './commands/tx-status';
 import { getSwapQuote, submitSwapOrder } from './commands/swap';
 import { swapOrderStatus } from './commands/swap-order-status';
 import { genWallet } from './commands/gen-wallet';
+import {
+  getStock,
+  getPriceChart,
+  getMarketIndexes,
+  getMarketStatus,
+  getEarnings,
+  getCongressMembers,
+  getCongressTrades,
+  getNews,
+  getRwaMarket,
+} from './commands/agent';
 import type { Hex } from 'viem';
 
 function askYesNo(question: string): Promise<boolean> {
@@ -552,6 +563,153 @@ program
       console.error(
         `\nTo use this wallet, either:\n  1. Pass it via -k flag: -k <private_key>\n  2. Save it to your environment: export WOOFTRADE_PRIVATE_KEY=<private_key>`,
       );
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('stock')
+  .description('Get comprehensive stock data (profile, price, metrics, ratings, news, congress trades)')
+  .requiredOption('-s, --symbol <symbol>', 'Stock ticker symbol (e.g. AAPL)')
+  .action(async (options: { symbol: string }) => {
+    try {
+      const result = await getStock({ symbol: options.symbol });
+      console.log(`WOOFTRADE_OK: Stock data retrieved successfully`);
+      console.log(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('price-chart')
+  .description('Get historical price chart data for a stock')
+  .requiredOption('-s, --symbol <symbol>', 'Stock ticker symbol (e.g. AAPL)')
+  .option(
+    '-p, --period <period>',
+    'Time period: 1W, 1M, 3M, 6M, YTD, 1YR, 5YR, All (default: 1M)',
+  )
+  .action(async (options: { symbol: string; period?: string }) => {
+    try {
+      const result = await getPriceChart({ symbol: options.symbol, period: options.period });
+      console.log(`WOOFTRADE_OK: Price chart data retrieved successfully`);
+      console.log(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('market-indexes')
+  .description('Get major market indexes (S&P 500, Dow, NASDAQ, VIX, etc.)')
+  .action(async () => {
+    try {
+      const result = await getMarketIndexes();
+      console.log(`WOOFTRADE_OK: Market indexes retrieved successfully`);
+      console.log(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('market-status')
+  .description('Get RWA market open/close status')
+  .action(async () => {
+    try {
+      const result = await getMarketStatus();
+      console.log(`WOOFTRADE_OK: Market status retrieved successfully`);
+      console.log(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('earnings')
+  .description('Get upcoming earnings calendar')
+  .option(
+    '-d, --days <days>',
+    'Number of days to look ahead (1-30, default: 7)',
+  )
+  .action(async (options: { days?: string }) => {
+    try {
+      const result = await getEarnings({ days: options.days });
+      console.log(`WOOFTRADE_OK: Earnings calendar retrieved successfully`);
+      console.log(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('congress-members')
+  .description('Get all current U.S. Congress members')
+  .action(async () => {
+    try {
+      const result = await getCongressMembers();
+      console.log(`WOOFTRADE_OK: Congress members retrieved successfully`);
+      console.log(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('congress-trades')
+  .description('Get stock trades by a specific Congress member')
+  .requiredOption('--first-name <name>', 'First name of the Congress member')
+  .requiredOption('--last-name <name>', 'Last name of the Congress member')
+  .action(async (options: { firstName: string; lastName: string }) => {
+    try {
+      const result = await getCongressTrades({ firstName: options.firstName, lastName: options.lastName });
+      console.log(`WOOFTRADE_OK: Congress trades retrieved successfully`);
+      console.log(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('news')
+  .description('Get latest financial news headlines')
+  .action(async () => {
+    try {
+      const result = await getNews();
+      console.log(`WOOFTRADE_OK: News retrieved successfully`);
+      console.log(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('rwa-market')
+  .description('Get Ondo Finance tokenized asset (RWA) market data')
+  .action(async () => {
+    try {
+      const result = await getRwaMarket();
+      console.log(`WOOFTRADE_OK: RWA market data retrieved successfully`);
+      console.log(result);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
