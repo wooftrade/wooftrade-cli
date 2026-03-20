@@ -1,4 +1,4 @@
-const WOOFTRADE_API_BASE = 'https://woof-trade.mewapi.workers.dev';
+const WOOFTRADE_API_BASE = 'http://localhost:5175';
 
 const FETCH_HEADERS = {
   'User-Agent': 'wooftrade/request',
@@ -73,4 +73,58 @@ export async function getNews() {
 
 export async function getRwaMarket() {
   return agentFetch('/api/agent/rwa-market');
+}
+
+export async function submitTrade(opts: {
+  orderHash: string;
+  network: string;
+  rationale?: string;
+  isAgent?: boolean;
+}) {
+  if (!opts.orderHash) throw new Error('orderHash is required');
+  if (!opts.network) throw new Error('network is required');
+  const url = new URL('/api/submit-trade', WOOFTRADE_API_BASE);
+  const res = await fetch(url.toString(), {
+    method: 'POST',
+    headers: {
+      ...FETCH_HEADERS,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      orderHash: opts.orderHash,
+      network: opts.network,
+      ...(opts.rationale ? { rationale: opts.rationale } : {}),
+      isAgent: opts.isAgent ?? true,
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Submit trade API error ${res.status}: ${body}`);
+  }
+  return res.json();
+}
+
+export async function submitMarketAnalysis(opts: {
+  payload: string;
+  from: string;
+  signature: string;
+}) {
+  const url = new URL('/api/agent/submit-market-analysis', WOOFTRADE_API_BASE);
+  const res = await fetch(url.toString(), {
+    method: 'POST',
+    headers: {
+      ...FETCH_HEADERS,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      payload: opts.payload,
+      from: opts.from,
+      signature: opts.signature,
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Submit market analysis API error ${res.status}: ${body}`);
+  }
+  return res.text();
 }

@@ -24,6 +24,8 @@ import {
   getCongressTrades,
   getNews,
   getRwaMarket,
+  submitTrade,
+  submitMarketAnalysis,
 } from './commands/agent';
 import type { Hex } from 'viem';
 
@@ -97,7 +99,8 @@ program
   .requiredOption('-h, --hash <hash>', 'Hash to sign (0x-prefixed hex string)')
   .action(async (options: { privateKey?: string; hash: string }) => {
     try {
-      const privateKey = options.privateKey ?? process.env.WOOFTRADE_PRIVATE_KEY;
+      const privateKey =
+        options.privateKey ?? process.env.WOOFTRADE_PRIVATE_KEY;
       if (!privateKey) {
         throw new Error(
           'Private key is required. Provide it via -k flag or WOOFTRADE_PRIVATE_KEY environment variable.',
@@ -129,7 +132,8 @@ program
   )
   .action(async (options: { privateKey?: string; data: string }) => {
     try {
-      const privateKey = options.privateKey ?? process.env.WOOFTRADE_PRIVATE_KEY;
+      const privateKey =
+        options.privateKey ?? process.env.WOOFTRADE_PRIVATE_KEY;
       if (!privateKey) {
         throw new Error(
           'Private key is required. Provide it via -k flag or WOOFTRADE_PRIVATE_KEY environment variable.',
@@ -192,7 +196,8 @@ program
   )
   .action(async (options: { privateKey?: string; transaction: string }) => {
     try {
-      const privateKey = options.privateKey ?? process.env.WOOFTRADE_PRIVATE_KEY;
+      const privateKey =
+        options.privateKey ?? process.env.WOOFTRADE_PRIVATE_KEY;
       if (!privateKey) {
         throw new Error(
           'Private key is required. Provide it via -k flag or WOOFTRADE_PRIVATE_KEY environment variable.',
@@ -389,7 +394,8 @@ program
   )
   .action(async (options: { privateKey?: string }) => {
     try {
-      const privateKey = options.privateKey ?? process.env.WOOFTRADE_PRIVATE_KEY;
+      const privateKey =
+        options.privateKey ?? process.env.WOOFTRADE_PRIVATE_KEY;
       if (!privateKey) {
         throw new Error(
           'Private key is required. Provide it via -k flag or WOOFTRADE_PRIVATE_KEY environment variable.',
@@ -462,6 +468,10 @@ program
     '-y, --yes',
     'Skip confirmation prompt and submit the order immediately',
   )
+  .option(
+    '--rationale <text>',
+    'Trading rationale (100-1000 chars, highly recommended for agents)',
+  )
   .action(
     async (options: {
       privateKey?: string;
@@ -470,6 +480,7 @@ program
       amount: string;
       network: string;
       yes?: boolean;
+      rationale?: string;
     }) => {
       try {
         const privateKey =
@@ -498,6 +509,31 @@ program
           const orderResult = await submitSwapOrder(swapInput);
           console.log(`WOOFTRADE_OK: Swap order submitted successfully`);
           console.log(JSON.stringify(orderResult, null, 2));
+
+          // Submit trade to WoofTrade API
+          const networkMap: Record<string, string> = {
+            mainnet: 'eth',
+            bsc: 'bsc',
+          };
+          const tradeNetwork = networkMap[options.network];
+          if (tradeNetwork) {
+            try {
+              const tradeResult = await submitTrade({
+                orderHash: orderResult.orderHash,
+                network: tradeNetwork,
+                rationale: options.rationale,
+                isAgent: true,
+              });
+              console.log(`WOOFTRADE_OK: Trade recorded on WoofTrade`);
+              console.log(JSON.stringify(tradeResult, null, 2));
+            } catch (tradeErr) {
+              const tradeMsg =
+                tradeErr instanceof Error ? tradeErr.message : String(tradeErr);
+              console.error(
+                `WOOFTRADE_WARN: Failed to record trade — ${tradeMsg}`,
+              );
+            }
+          }
         }
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
@@ -572,7 +608,9 @@ program
 
 program
   .command('stock')
-  .description('Get comprehensive stock data (profile, price, metrics, ratings, news, congress trades)')
+  .description(
+    'Get comprehensive stock data (profile, price, metrics, ratings, news, congress trades)',
+  )
   .requiredOption('-s, --symbol <symbol>', 'Stock ticker symbol (e.g. AAPL)')
   .action(async (options: { symbol: string }) => {
     try {
@@ -596,7 +634,10 @@ program
   )
   .action(async (options: { symbol: string; period?: string }) => {
     try {
-      const result = await getPriceChart({ symbol: options.symbol, period: options.period });
+      const result = await getPriceChart({
+        symbol: options.symbol,
+        period: options.period,
+      });
       console.log(`WOOFTRADE_OK: Price chart data retrieved successfully`);
       console.log(result);
     } catch (err) {
@@ -677,7 +718,10 @@ program
   .requiredOption('--last-name <name>', 'Last name of the Congress member')
   .action(async (options: { firstName: string; lastName: string }) => {
     try {
-      const result = await getCongressTrades({ firstName: options.firstName, lastName: options.lastName });
+      const result = await getCongressTrades({
+        firstName: options.firstName,
+        lastName: options.lastName,
+      });
       console.log(`WOOFTRADE_OK: Congress trades retrieved successfully`);
       console.log(result);
     } catch (err) {
@@ -716,6 +760,72 @@ program
       process.exit(1);
     }
   });
+
+program
+  .command('submit-market-analysis')
+  .description(
+    'Submit a signed market analysis for a stock (ticker, analysis, sentiment)',
+  )
+  .option(
+    '-k, --private-key <key>',
+    'Private key (hex string starting with 0x, or set WOOFTRADE_PRIVATE_KEY env var)',
+  )
+  .requiredOption('-s, --symbol <symbol>', 'Stock ticker symbol (e.g. AAPL)')
+  .requiredOption(
+    '-a, --analysis <text>',
+    'Market analysis text (160-2000 chars)',
+  )
+  .requiredOption(
+    '--sentiment <sentiment>',
+    'Market sentiment: bullish, bearish, or neutral',
+  )
+  .action(
+    async (options: {
+      privateKey?: string;
+      symbol: string;
+      analysis: string;
+      sentiment: string;
+    }) => {
+      try {
+        const privateKey =
+          options.privateKey ?? process.env.WOOFTRADE_PRIVATE_KEY;
+        if (!privateKey) {
+          throw new Error(
+            'Private key is required. Provide it via -k flag or WOOFTRADE_PRIVATE_KEY environment variable.',
+          );
+        }
+
+        const validSentiments = ['bullish', 'bearish', 'neutral'];
+        if (!validSentiments.includes(options.sentiment)) {
+          throw new Error(
+            `Invalid sentiment: ${options.sentiment}. Must be one of: ${validSentiments.join(', ')}`,
+          );
+        }
+
+        const payload = JSON.stringify({
+          ticker: options.symbol.toUpperCase(),
+          analysis: options.analysis,
+          sentiment: options.sentiment,
+        });
+
+        const { privateKeyToAccount } = await import('viem/accounts');
+        const account = privateKeyToAccount(privateKey as Hex);
+        const signature = await account.signMessage({ message: payload });
+
+        const result = await submitMarketAnalysis({
+          payload,
+          from: account.address,
+          signature,
+        });
+        console.log(`WOOFTRADE_OK: Market analysis submitted successfully`);
+        console.log(result);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+        process.exit(1);
+      }
+    },
+  );
 
 program.parseAsync(process.argv).catch((err) => {
   console.error(
