@@ -26,6 +26,8 @@ metadata:
 > **⚠️ DISCLAIMER — USE AT YOUR OWN RISK**
 >
 > This tool interacts with real blockchain networks and real funds. The author(s) of this tool are **not responsible for any loss of funds**, damages, or unintended consequences arising from its use. By using this skill, you accept full responsibility for all operations performed.
+>
+> **🚫 Trading (swap) functionality is NOT available to U.S. persons.** Agents must not use the `swap` command on behalf of U.S. persons or entities.
 
 > **🔒 MANDATORY SECURITY REQUIREMENTS FOR ALL AGENTS**
 >
