@@ -5,14 +5,14 @@
 Swap tokens via 1inch Fusion. Gets a quote first, then optionally submits the order. Use `-y` to skip confirmation and submit immediately.
 
 ```bash
-npx wooftrade@0.0.10 swap -k 0xKEY --from-token 0xFROM --to-token 0xTO --amount 1.5
-npx wooftrade@0.0.10 swap -k 0xKEY --from-token 0xFROM --to-token 0xTO --amount 1.5 -y
-npx wooftrade@0.0.10 swap -k 0xKEY --from-token 0xFROM --to-token 0xTO --amount 0.5 -n bsc
+npx wooftrade@0.0.11 swap -k 0xKEY --from-token 0xFROM --to-token 0xTO --amount 1.5
+npx wooftrade@0.0.11 swap -k 0xKEY --from-token 0xFROM --to-token 0xTO --amount 1.5 -y
+npx wooftrade@0.0.11 swap -k 0xKEY --from-token 0xFROM --to-token 0xTO --amount 0.5 -n bsc
 ```
 
 Use `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` for native tokens.
 
-> **RWA Tokens**: When swapping tokenized real-world assets (RWA), use `npx wooftrade@0.0.10 rwa-market` first to look up the correct token contract address and verify the token is currently tradable before passing it to `--from-token` or `--to-token`.
+> **RWA Tokens**: When swapping tokenized real-world assets (RWA), use `npx wooftrade@0.0.11 rwa-market` first to look up the correct token contract address and verify the token is currently tradable before passing it to `--from-token` or `--to-token`.
 
 **Options**:
 
@@ -66,8 +66,8 @@ Use `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` for native tokens.
 Get the status of a 1inch Fusion swap order by its order hash.
 
 ```bash
-npx wooftrade@0.0.10 swap-order-status -k 0xKEY --order-hash 0xORDER_HASH
-npx wooftrade@0.0.10 swap-order-status -k 0xKEY --order-hash 0xORDER_HASH -n bsc
+npx wooftrade@0.0.11 swap-order-status -k 0xKEY --order-hash 0xORDER_HASH
+npx wooftrade@0.0.11 swap-order-status -k 0xKEY --order-hash 0xORDER_HASH -n bsc
 ```
 
 **Options**:
