@@ -748,6 +748,8 @@ WOOFTRADE_OK: Swap order submitted successfully
 
 Note: `approvalTxHash` is non-null only when an ERC-20 token approval transaction was required and sent before submitting the order. For native token swaps or when the token is already approved, this will be `null`.
 
+> **Important**: After receiving an `orderHash`, agents **must** periodically call `swap-order-status` to poll the order until it reaches a terminal state (`filled`, `expired`, or `cancelled`). Poll every 10–15 seconds. Do not assume the swap is complete just because the order was submitted — Fusion orders are filled asynchronously by resolvers.
+
 #### Example
 
 ```bash

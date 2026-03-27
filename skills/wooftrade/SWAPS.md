@@ -64,6 +64,10 @@ Use `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` for native tokens.
 
 > **Note**: `orderHash` is **not** a transaction hash — it is a 1inch Fusion order identifier. It cannot be used with `tx-status` or looked up on a block explorer. Use it exclusively with the `swap-order-status` command to track the order's progress.
 
+> **⏳ POLL FOR COMPLETION**
+>
+> After receiving an `orderHash`, you **must** periodically call `swap-order-status` to track the order until it reaches a terminal state (`filled`, `expired`, or `cancelled`). Poll every **10–15 seconds** until the status is no longer `pending`. Do not assume the swap is complete just because the order was submitted — Fusion orders are filled asynchronously by resolvers.
+
 `approvalTxHash` is non-null only when an ERC-20 token approval was required. For native token swaps or already-approved tokens, it is `null`.
 
 ---
