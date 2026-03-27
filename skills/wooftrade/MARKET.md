@@ -14,7 +14,78 @@ npx wooftrade@0.0.11 stock -s AAPL
 | ----------------------- | -------- | ---------------------------------- |
 | `-s, --symbol <symbol>` | Yes      | Stock ticker symbol (e.g. `AAPL`). |
 
-**Output (stdout)**: Comprehensive stock data as text.
+**Return values**:
+
+| Field                       | Type           | Description                                |
+| --------------------------- | -------------- | ------------------------------------------ |
+| `symbol`                    | string         | Ticker symbol                              |
+| `name`                      | string         | Company name                               |
+| `desc`                      | string \| null | Company description                        |
+| `sector`                    | string         | Sector (e.g. Technology)                   |
+| `industry`                  | string         | Industry (e.g. Consumer Electronics)       |
+| `exchange`                  | string         | Exchange (e.g. NASDAQ)                     |
+| `currency`                  | string         | Trading currency                           |
+| `isEtf`                     | boolean        | Whether the asset is an ETF                |
+| `ipoDate`                   | string \| null | IPO date                                   |
+| `employees`                 | number \| null | Number of employees                        |
+| `price`                     | number         | Current price                              |
+| `change`                    | number         | Price change                               |
+| `changePct`                 | number         | Price change percentage                    |
+| `open`                      | number \| null | Today's open price                         |
+| `high`                      | number \| null | Today's high                               |
+| `low`                       | number \| null | Today's low                                |
+| `prevClose`                 | number \| null | Previous close price                       |
+| `mktCap`                    | number         | Market capitalization                      |
+| `volume`                    | number         | Current volume                             |
+| `avgVolume`                 | number         | Average volume                             |
+| `sharesOut`                 | number \| null | Shares outstanding                         |
+| `yearHigh`                  | number \| null | 52-week high                               |
+| `yearLow`                   | number \| null | 52-week low                                |
+| `beta`                      | number         | Beta coefficient                           |
+| `pe`                        | number \| null | Price-to-earnings ratio                    |
+| `divYield`                  | number \| null | Dividend yield                             |
+| `divFreq`                   | string \| null | Dividend frequency                         |
+| `lastDiv`                   | number \| null | Last dividend amount                       |
+| `targetHigh`                | number \| null | Analyst target high                        |
+| `targetLow`                 | number \| null | Analyst target low                         |
+| `targetConsensus`           | number \| null | Analyst consensus target                   |
+| `ratingScore`               | number \| null | Overall analyst rating score               |
+| `recentGrades`              | array          | Up to 5 recent analyst grades              |
+| `recentGrades[].date`       | string         | Grade date                                 |
+| `recentGrades[].firm`       | string         | Grading firm name                          |
+| `recentGrades[].grade`      | string         | New grade                                  |
+| `recentGrades[].action`     | string         | Action (e.g. Upgrade, Downgrade)           |
+| `upcomingEarnings`          | array          | Up to 3 upcoming earnings                  |
+| `upcomingEarnings[].date`   | string         | Earnings date                              |
+| `upcomingEarnings[].epsEst` | number         | Estimated EPS                              |
+| `upcomingEarnings[].revEst` | number         | Estimated revenue                          |
+| `peers`                     | string[]       | Up to 8 peer ticker symbols                |
+| `news`                      | array          | Up to 5 recent news items                  |
+| `news[].date`               | string         | Published date                             |
+| `news[].title`              | string         | Headline                                   |
+| `news[].url`                | string         | Article URL                                |
+| `congressTrades`            | array          | Up to 10 congress trades                   |
+| `congressTrades[].date`     | string         | Transaction date                           |
+| `congressTrades[].name`     | string         | Member full name                           |
+| `congressTrades[].type`     | string         | Buy or Sell                                |
+| `congressTrades[].amount`   | number         | Trade amount                               |
+| `congressTrades[].office`   | string         | Office held                                |
+| `priceSeries30d`            | array          | 30-day price series (sampled to 30 points) |
+| `priceSeries30d[].d`        | string         | Date                                       |
+| `priceSeries30d[].c`        | number         | Close price                                |
+
+For ETFs, an additional `etf` object is included:
+
+| Field                      | Type   | Description              |
+| -------------------------- | ------ | ------------------------ |
+| `etf.company`              | string | ETF company              |
+| `etf.expenseRatio`         | number | Expense ratio            |
+| `etf.aum`                  | number | Assets under management  |
+| `etf.holdingsCount`        | number | Number of holdings       |
+| `etf.topHoldings`          | array  | Up to 10 top holdings    |
+| `etf.topHoldings[].asset`  | string | Holding ticker           |
+| `etf.topHoldings[].name`   | string | Holding name             |
+| `etf.topHoldings[].weight` | number | Portfolio weight percent |
 
 ---
 
@@ -34,7 +105,17 @@ npx wooftrade@0.0.11 price-chart -s AAPL -p 3M
 | `-s, --symbol <symbol>` | Yes      | Stock ticker symbol (e.g. `AAPL`).                                              |
 | `-p, --period <period>` | No       | Time period: `1W`, `1M`, `3M`, `6M`, `YTD`, `1YR`, `5YR`, `All`. Default: `1M`. |
 
-**Output (stdout)**: Historical price chart data as text.
+**Return values**:
+
+| Field        | Type   | Description           |
+| ------------ | ------ | --------------------- |
+| `symbol`     | string | Ticker symbol         |
+| `period`     | string | Requested period      |
+| `count`      | number | Number of data points |
+| `prices`     | array  | Price data points     |
+| `prices[].d` | string | Date                  |
+| `prices[].c` | number | Close price           |
+| `prices[].v` | number | Volume                |
 
 ---
 
@@ -48,7 +129,17 @@ npx wooftrade@0.0.11 market-indexes
 
 **Options**: None.
 
-**Output (stdout)**: Current major market index values as text.
+**Return values**:
+
+| Field                 | Type           | Description            |
+| --------------------- | -------------- | ---------------------- |
+| `indexes`             | array          | List of market indexes |
+| `indexes[].symbol`    | string         | Index symbol           |
+| `indexes[].name`      | string         | Index name             |
+| `indexes[].price`     | number         | Current price          |
+| `indexes[].change`    | number \| null | Price change           |
+| `indexes[].changePct` | number \| null | Change percentage      |
+| `indexes[].volume`    | number         | Volume                 |
 
 ---
 
@@ -62,7 +153,15 @@ npx wooftrade@0.0.11 market-status
 
 **Options**: None.
 
-**Output (stdout)**: Market open/close status as text.
+**Return values**:
+
+| Field          | Type     | Description                           |
+| -------------- | -------- | ------------------------------------- |
+| `isOpen`       | boolean  | Whether the market is currently open  |
+| `status`       | string   | Market status description             |
+| `nextOpen`     | string   | Next market open time (ISO datetime)  |
+| `nextClose`    | string   | Next market close time (ISO datetime) |
+| `pausedAssets` | string[] | Symbols with currently paused trading |
 
 ---
 
@@ -81,7 +180,16 @@ npx wooftrade@0.0.11 earnings -d 14
 | ------------------- | -------- | ------------------------------------------------ |
 | `-d, --days <days>` | No       | Number of days to look ahead (1-30). Default: 7. |
 
-**Output (stdout)**: Upcoming earnings calendar as text.
+**Return values**:
+
+| Field               | Type           | Description       |
+| ------------------- | -------------- | ----------------- |
+| `count`             | number         | Number of results |
+| `earnings`          | array          | Earnings entries  |
+| `earnings[].sym`    | string         | Ticker symbol     |
+| `earnings[].date`   | string         | Earnings date     |
+| `earnings[].epsEst` | number \| null | Estimated EPS     |
+| `earnings[].revEst` | number \| null | Estimated revenue |
 
 ---
 
@@ -95,7 +203,16 @@ npx wooftrade@0.0.11 congress-members
 
 **Options**: None.
 
-**Output (stdout)**: List of Congress members as text.
+**Return values**:
+
+| Field               | Type   | Description                                             |
+| ------------------- | ------ | ------------------------------------------------------- |
+| `count`             | number | Total members returned                                  |
+| `members`           | array  | Congress member list                                    |
+| `members[].name`    | string | Full name                                               |
+| `members[].party`   | string | Party initial (D=Democrat, R=Republican, I=Independent) |
+| `members[].state`   | string | Two-letter state code                                   |
+| `members[].chamber` | string | S=Senate, H=House of Representatives                    |
 
 ---
 
@@ -114,7 +231,19 @@ npx wooftrade@0.0.11 congress-trades --first-name Nancy --last-name Pelosi
 | `--first-name <name>` | Yes      | First name of the Congress member. |
 | `--last-name <name>`  | Yes      | Last name of the Congress member.  |
 
-**Output (stdout)**: Congress member's stock trades as text.
+**Return values** (up to 100 trades):
+
+| Field                | Type   | Description           |
+| -------------------- | ------ | --------------------- |
+| `count`              | number | Number of trades      |
+| `trades`             | array  | Trade entries         |
+| `trades[].sym`       | string | Ticker symbol         |
+| `trades[].date`      | string | Transaction date      |
+| `trades[].disclosed` | string | Disclosure date       |
+| `trades[].type`      | string | Trade type (Buy/Sell) |
+| `trades[].amount`    | number | Trade amount          |
+| `trades[].owner`     | string | Owner relationship    |
+| `trades[].asset`     | string | Asset description     |
 
 ---
 
@@ -128,7 +257,17 @@ npx wooftrade@0.0.11 news
 
 **Options**: None.
 
-**Output (stdout)**: Latest financial news headlines as text.
+**Return values**:
+
+| Field           | Type   | Description        |
+| --------------- | ------ | ------------------ |
+| `count`         | number | Number of articles |
+| `news`          | array  | News items         |
+| `news[].sym`    | string | Related ticker     |
+| `news[].date`   | string | Published date     |
+| `news[].title`  | string | Headline           |
+| `news[].source` | string | News source site   |
+| `news[].url`    | string | Article URL        |
 
 ---
 
@@ -147,7 +286,27 @@ npx wooftrade@0.0.11 rwa-market -s NVDA
 | ----------------------- | -------- | ---------------------------------------------------------------------- |
 | `-s, --symbol <symbol>` | No       | Filter by token symbol or underlying ticker (e.g. `NVDAon` or `NVDA`). |
 
-**Output (stdout)**: RWA market data as text.
+**Return values**:
+
+| Field                           | Type           | Description                             |
+| ------------------------------- | -------------- | --------------------------------------- |
+| `updated`                       | string         | Last data update timestamp              |
+| `count`                         | number         | Number of assets returned               |
+| `assets`                        | array          | Tokenized asset list                    |
+| `assets[].sym`                  | string         | Token symbol (e.g. `NVDAon`)            |
+| `assets[].ticker`               | string         | Underlying stock ticker (e.g. `NVDA`)   |
+| `assets[].name`                 | string         | Asset name                              |
+| `assets[].price`                | number         | Current price                           |
+| `assets[].change24h`            | number         | 24h price change percentage             |
+| `assets[].holders`              | number         | Total token holders                     |
+| `assets[].mktCap`               | number         | Underlying market cap                   |
+| `assets[].volume`               | number         | Underlying volume                       |
+| `assets[].tradable`             | boolean        | Whether the asset is currently tradable |
+| `assets[].pauseReason`          | string \| null | Reason if trading is paused             |
+| `assets[].addresses`            | array          | On-chain contract addresses             |
+| `assets[].addresses[].chain`    | string         | Chain name (e.g. Ethereum)              |
+| `assets[].addresses[].address`  | string         | Contract address                        |
+| `assets[].addresses[].decimals` | number         | Token decimals                          |
 
 ---
 
@@ -172,4 +331,12 @@ npx wooftrade@0.0.11 submit-market-analysis -s AAPL -a "Detailed analysis text h
 | `-a, --analysis <text>`   | Yes      | Market analysis text (160-2000 chars).                |
 | `--sentiment <sentiment>` | Yes      | Market sentiment: `bullish`, `bearish`, or `neutral`. |
 
-**Output (stdout)**: Confirmation of submitted analysis as text.
+**Return values**:
+
+| Field       | Type   | Description                           |
+| ----------- | ------ | ------------------------------------- |
+| `ok`        | true   | Confirmation of successful submission |
+| `ticker`    | string | Submitted ticker symbol               |
+| `sentiment` | string | Submitted sentiment                   |
+| `from`      | string | Signer address (lowercase)            |
+| `createdAt` | string | Submission timestamp                  |
