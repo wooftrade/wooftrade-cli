@@ -1,4 +1,4 @@
-const WOOFTRADE_API_BASE = 'http://localhost:5175';
+const WOOFTRADE_API_BASE = 'https://www.wooftrade.com';
 
 const FETCH_HEADERS = {
   'User-Agent': 'wooftrade/request',
@@ -71,8 +71,10 @@ export async function getNews() {
   return agentFetch('/api/agent/news');
 }
 
-export async function getRwaMarket() {
-  return agentFetch('/api/agent/rwa-market');
+export async function getRwaMarket(opts?: { symbol?: string }) {
+  const params: Record<string, string> = {};
+  if (opts?.symbol) params.symbol = opts.symbol;
+  return agentFetch('/api/agent/rwa-market', params);
 }
 
 export async function submitTrade(opts: {

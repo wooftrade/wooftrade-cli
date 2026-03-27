@@ -29,8 +29,8 @@ All output is written to `stdout` (success) or `stderr` (errors). Messages are d
 
 Success messages are written to `stdout`. Agents should parse `stdout` to determine the result of the operation.
 
-| Message                     | Meaning                                                                                                 |
-| --------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Message                       | Meaning                                                                                                 |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `WOOFTRADE_OK: <description>` | The requested operation completed successfully. `<description>` contains a brief summary of the result. |
 
 ### Error Messages
@@ -87,6 +87,7 @@ src/
     swap.ts          # swap command implementation (1inch Fusion)
     swap-order-status.ts # swap-order-status command implementation
     gen-wallet.ts    # gen-wallet command implementation
+    agent.ts         # Market data commands (stock, price-chart, market-indexes, etc.)
 tests/
   sign-message.test.ts  # Tests for sign-message
   sign.test.ts          # Tests for sign
@@ -119,16 +120,16 @@ npx wooftrade@latest sign-message [options]
 
 #### Options
 
-| Flag                      | Required | Description                                                                               |
-| ------------------------- | -------- | ----------------------------------------------------------------------------------------- |
+| Flag                      | Required | Description                                                                                 |
+| ------------------------- | -------- | ------------------------------------------------------------------------------------------- |
 | `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var. |
-| `-m, --message <message>` | Yes      | The message to sign.                                                                      |
-| `-r, --raw`               | No       | Treat message as raw hex data. Message must be a valid `0x`-prefixed hex string.          |
+| `-m, --message <message>` | Yes      | The message to sign.                                                                        |
+| `-r, --raw`               | No       | Treat message as raw hex data. Message must be a valid `0x`-prefixed hex string.            |
 
 #### Environment Variables
 
-| Variable              | Description                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------- |
+| Variable                | Description                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
 | `WOOFTRADE_PRIVATE_KEY` | Fallback private key used when `-k` is not provided. Must be a hex string starting with `0x`. |
 
 #### Output (stdout)
@@ -181,15 +182,15 @@ npx wooftrade@latest sign [options]
 
 #### Options
 
-| Flag                      | Required | Description                                                                               |
-| ------------------------- | -------- | ----------------------------------------------------------------------------------------- |
+| Flag                      | Required | Description                                                                                 |
+| ------------------------- | -------- | ------------------------------------------------------------------------------------------- |
 | `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var. |
-| `-h, --hash <hash>`       | Yes      | The hash to sign. Must be a `0x`-prefixed hex string.                                     |
+| `-h, --hash <hash>`       | Yes      | The hash to sign. Must be a `0x`-prefixed hex string.                                       |
 
 #### Environment Variables
 
-| Variable              | Description                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------- |
+| Variable                | Description                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
 | `WOOFTRADE_PRIVATE_KEY` | Fallback private key used when `-k` is not provided. Must be a hex string starting with `0x`. |
 
 #### Output (stdout)
@@ -229,13 +230,13 @@ npx wooftrade@latest sign-typed-data [options]
 
 | Flag                      | Required | Description                                                                                     |
 | ------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
-| `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var.       |
+| `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var.     |
 | `-d, --data <json>`       | Yes      | EIP-712 typed data as a JSON string containing `domain`, `types`, `primaryType`, and `message`. |
 
 #### Environment Variables
 
-| Variable              | Description                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------- |
+| Variable                | Description                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
 | `WOOFTRADE_PRIVATE_KEY` | Fallback private key used when `-k` is not provided. Must be a hex string starting with `0x`. |
 
 #### Data Format
@@ -294,15 +295,15 @@ npx wooftrade@latest sign-transaction [options]
 
 #### Options
 
-| Flag                       | Required | Description                                                                               |
-| -------------------------- | -------- | ----------------------------------------------------------------------------------------- |
+| Flag                       | Required | Description                                                                                 |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------- |
 | `-k, --private-key <key>`  | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var. |
-| `-t, --transaction <json>` | Yes      | Transaction object as a JSON string.                                                      |
+| `-t, --transaction <json>` | Yes      | Transaction object as a JSON string.                                                        |
 
 #### Environment Variables
 
-| Variable              | Description                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------- |
+| Variable                | Description                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
 | `WOOFTRADE_PRIVATE_KEY` | Fallback private key used when `-k` is not provided. Must be a hex string starting with `0x`. |
 
 #### Transaction Format
@@ -382,7 +383,7 @@ npx wooftrade@latest get-balance [options]
 
 | Flag                      | Required | Description                                                                                                                                  |
 | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-a, --address <address>` | No       | Wallet address (`0x`-prefixed hex string). Falls back to address derived from `WOOFTRADE_PRIVATE_KEY` env var.                                 |
+| `-a, --address <address>` | No       | Wallet address (`0x`-prefixed hex string). Falls back to address derived from `WOOFTRADE_PRIVATE_KEY` env var.                               |
 | `-n, --network <network>` | No       | Network name, alias, or chain ID. Defaults to `mainnet`. Supported: `mainnet`/`ethereum`/`eth` (1), `bsc`/`binance`/`bnb` (56).              |
 | `-t, --token <token>`     | No       | Token contract address. Defaults to `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` (native token). Use the contract address for ERC-20 tokens. |
 | `--all`                   | No       | Return all token balances (native + ERC-20). When set, `-t` is ignored.                                                                      |
@@ -494,7 +495,7 @@ npx wooftrade@latest send [options]
 
 | Flag                      | Required | Description                                                                                                                     |
 | ------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var.                                       |
+| `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var.                                     |
 | `--to <address>`          | Yes      | Recipient address (`0x`-prefixed hex string).                                                                                   |
 | `-t, --token <token>`     | Yes      | Token contract address. Use `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` for native token.                                      |
 | `--amount <amount>`       | Yes      | Amount to send in human-readable units (e.g. `"1.5"`). Converted using the token's decimals.                                    |
@@ -503,8 +504,8 @@ npx wooftrade@latest send [options]
 
 #### Environment Variables
 
-| Variable              | Description                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------- |
+| Variable                | Description                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
 | `WOOFTRADE_PRIVATE_KEY` | Fallback private key used when `-k` is not provided. Must be a hex string starting with `0x`. |
 
 #### Output (stdout)
@@ -596,14 +597,14 @@ npx wooftrade@latest who-am-i [options]
 
 #### Options
 
-| Flag                      | Required | Description                                                                               |
-| ------------------------- | -------- | ----------------------------------------------------------------------------------------- |
+| Flag                      | Required | Description                                                                                 |
+| ------------------------- | -------- | ------------------------------------------------------------------------------------------- |
 | `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var. |
 
 #### Environment Variables
 
-| Variable              | Description                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------- |
+| Variable                | Description                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
 | `WOOFTRADE_PRIVATE_KEY` | Fallback private key used when `-k` is not provided. Must be a hex string starting with `0x`. |
 
 #### Output (stdout)
@@ -694,7 +695,7 @@ npx wooftrade@latest swap [options]
 
 | Flag                      | Required | Description                                                                                                                     |
 | ------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var.                                       |
+| `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var.                                     |
 | `--from-token <address>`  | Yes      | Source token contract address. Use `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` for native token.                               |
 | `--to-token <address>`    | Yes      | Destination token contract address. Use `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` for native token.                          |
 | `--amount <amount>`       | Yes      | Amount to swap in human-readable units (e.g. `"1.5"`). Converted using the token's decimals.                                    |
@@ -703,8 +704,8 @@ npx wooftrade@latest swap [options]
 
 #### Environment Variables
 
-| Variable              | Description                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------- |
+| Variable                | Description                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
 | `WOOFTRADE_PRIVATE_KEY` | Fallback private key used when `-k` is not provided. Must be a hex string starting with `0x`. |
 
 #### Output (stdout)
@@ -775,14 +776,14 @@ npx wooftrade@latest swap-order-status [options]
 
 | Flag                      | Required | Description                                                                                                                     |
 | ------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var.                                       |
+| `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var.                                     |
 | `--order-hash <hash>`     | Yes      | Order hash returned from the `swap` command.                                                                                    |
 | `-n, --network <network>` | No       | Network name, alias, or chain ID. Defaults to `mainnet`. Supported: `mainnet`/`ethereum`/`eth` (1), `bsc`/`binance`/`bnb` (56). |
 
 #### Environment Variables
 
-| Variable              | Description                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------- |
+| Variable                | Description                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
 | `WOOFTRADE_PRIVATE_KEY` | Fallback private key used when `-k` is not provided. Must be a hex string starting with `0x`. |
 
 #### Output (stdout)
@@ -859,4 +860,317 @@ To use this wallet, either:
 ```bash
 # Generate a new wallet
 npx wooftrade@latest gen-wallet
+```
+
+---
+
+### `stock`
+
+Get comprehensive stock data (profile, price, metrics, ratings, news, congress trades).
+
+```
+npx wooftrade@latest stock [options]
+```
+
+#### Options
+
+| Flag                    | Required | Description                        |
+| ----------------------- | -------- | ---------------------------------- |
+| `-s, --symbol <symbol>` | Yes      | Stock ticker symbol (e.g. `AAPL`). |
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: Stock data retrieved successfully
+<comprehensive stock data as text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest stock -s AAPL
+```
+
+---
+
+### `price-chart`
+
+Get historical price chart data for a stock.
+
+```
+npx wooftrade@latest price-chart [options]
+```
+
+#### Options
+
+| Flag                    | Required | Description                                                                     |
+| ----------------------- | -------- | ------------------------------------------------------------------------------- |
+| `-s, --symbol <symbol>` | Yes      | Stock ticker symbol (e.g. `AAPL`).                                              |
+| `-p, --period <period>` | No       | Time period: `1W`, `1M`, `3M`, `6M`, `YTD`, `1YR`, `5YR`, `All`. Default: `1M`. |
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: Price chart data retrieved successfully
+<historical price data as text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest price-chart -s AAPL
+npx wooftrade@latest price-chart -s AAPL -p 3M
+```
+
+---
+
+### `market-indexes`
+
+Get major market indexes (S&P 500, Dow, NASDAQ, VIX, etc.).
+
+```
+npx wooftrade@latest market-indexes
+```
+
+#### Options
+
+This command takes no options.
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: Market indexes retrieved successfully
+<market indexes data as text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest market-indexes
+```
+
+---
+
+### `market-status`
+
+Get RWA market open/close status.
+
+```
+npx wooftrade@latest market-status
+```
+
+#### Options
+
+This command takes no options.
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: Market status retrieved successfully
+<market status data as text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest market-status
+```
+
+---
+
+### `earnings`
+
+Get upcoming earnings calendar.
+
+```
+npx wooftrade@latest earnings [options]
+```
+
+#### Options
+
+| Flag                | Required | Description                                      |
+| ------------------- | -------- | ------------------------------------------------ |
+| `-d, --days <days>` | No       | Number of days to look ahead (1-30). Default: 7. |
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: Earnings calendar retrieved successfully
+<earnings calendar data as text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest earnings
+npx wooftrade@latest earnings -d 14
+```
+
+---
+
+### `congress-members`
+
+Get all current U.S. Congress members.
+
+```
+npx wooftrade@latest congress-members
+```
+
+#### Options
+
+This command takes no options.
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: Congress members retrieved successfully
+<congress members data as text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest congress-members
+```
+
+---
+
+### `congress-trades`
+
+Get stock trades by a specific Congress member.
+
+```
+npx wooftrade@latest congress-trades [options]
+```
+
+#### Options
+
+| Flag                  | Required | Description                        |
+| --------------------- | -------- | ---------------------------------- |
+| `--first-name <name>` | Yes      | First name of the Congress member. |
+| `--last-name <name>`  | Yes      | Last name of the Congress member.  |
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: Congress trades retrieved successfully
+<congress trades data as text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest congress-trades --first-name Nancy --last-name Pelosi
+```
+
+---
+
+### `news`
+
+Get latest financial news headlines.
+
+```
+npx wooftrade@latest news
+```
+
+#### Options
+
+This command takes no options.
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: News retrieved successfully
+<financial news data as text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest news
+```
+
+---
+
+### `rwa-market`
+
+Get Ondo Finance tokenized asset (RWA) market data.
+
+```
+npx wooftrade@latest rwa-market
+```
+
+#### Options
+
+This command takes no options.
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: RWA market data retrieved successfully
+<RWA market data as text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest rwa-market
+```
+
+---
+
+### `submit-market-analysis`
+
+Submit a signed market analysis for a stock. The analysis is signed with your private key for authenticity.
+
+```
+npx wooftrade@latest submit-market-analysis [options]
+```
+
+#### Options
+
+| Flag                      | Required | Description                                                                                 |
+| ------------------------- | -------- | ------------------------------------------------------------------------------------------- |
+| `-k, --private-key <key>` | No       | Private key (hex string starting with `0x`). Falls back to `WOOFTRADE_PRIVATE_KEY` env var. |
+| `-s, --symbol <symbol>`   | Yes      | Stock ticker symbol (e.g. `AAPL`).                                                          |
+| `-a, --analysis <text>`   | Yes      | Market analysis text (160-2000 chars).                                                      |
+| `--sentiment <sentiment>` | Yes      | Market sentiment: `bullish`, `bearish`, or `neutral`.                                       |
+
+#### Environment Variables
+
+| Variable                | Description                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
+| `WOOFTRADE_PRIVATE_KEY` | Fallback private key used when `-k` is not provided. Must be a hex string starting with `0x`. |
+
+#### Output (stdout)
+
+On success, prints:
+
+```
+WOOFTRADE_OK: Market analysis submitted successfully
+<confirmation text>
+```
+
+#### Example
+
+```bash
+npx wooftrade@latest submit-market-analysis -s AAPL -a "Detailed analysis text here..." --sentiment bullish
 ```

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import 'dotenv/config';
 import { Command } from 'commander';
 import * as readline from 'readline';
 import { signMessage } from './commands/sign-message';
@@ -749,9 +750,13 @@ program
 program
   .command('rwa-market')
   .description('Get Ondo Finance tokenized asset (RWA) market data')
-  .action(async () => {
+  .option(
+    '-s, --symbol <symbol>',
+    'Filter by token symbol or underlying ticker (e.g. NVDAon or NVDA)',
+  )
+  .action(async (options: { symbol?: string }) => {
     try {
-      const result = await getRwaMarket();
+      const result = await getRwaMarket({ symbol: options.symbol });
       console.log(`WOOFTRADE_OK: RWA market data retrieved successfully`);
       console.log(result);
     } catch (err) {
