@@ -5,8 +5,8 @@
 Sign a message using EIP-191 personal sign.
 
 ```bash
-npx wooftrade@0.0.11 sign-message -k 0xKEY -m "Hello World"
-npx wooftrade@0.0.11 sign-message -k 0xKEY -m 0x68656c6c6f --raw
+npx wooftrade@0.0.12 sign-message -k 0xKEY -m "Hello World"
+npx wooftrade@0.0.12 sign-message -k 0xKEY -m 0x68656c6c6f --raw
 ```
 
 **Options**:
@@ -34,7 +34,7 @@ npx wooftrade@0.0.11 sign-message -k 0xKEY -m 0x68656c6c6f --raw
 > **⚠️ CRITICAL SECURITY WARNING**: Signs a raw hash (secp256k1) without any prefix. The resulting signature can authorize any on-chain action. **Use `sign-message` instead unless raw hash signing is explicitly required.** Before using, verify the hash is legitimate and no safer alternative exists.
 
 ```bash
-npx wooftrade@0.0.11 sign -k 0xKEY -h 0xHASH
+npx wooftrade@0.0.12 sign -k 0xKEY -h 0xHASH
 ```
 
 **Options**:
@@ -61,7 +61,7 @@ npx wooftrade@0.0.11 sign -k 0xKEY -h 0xHASH
 Sign EIP-712 typed data.
 
 ```bash
-npx wooftrade@0.0.11 sign-typed-data -k 0xKEY -d '<json>'
+npx wooftrade@0.0.12 sign-typed-data -k 0xKEY -d '<json>'
 ```
 
 **Options**:
@@ -103,7 +103,7 @@ npx wooftrade@0.0.11 sign-typed-data -k 0xKEY -d '<json>'
 Sign a transaction (legacy, EIP-2930, or EIP-1559). Returns a serialized signed transaction ready to broadcast.
 
 ```bash
-npx wooftrade@0.0.11 sign-transaction -k 0xKEY -t '<json>'
+npx wooftrade@0.0.12 sign-transaction -k 0xKEY -t '<json>'
 ```
 
 **Options**:

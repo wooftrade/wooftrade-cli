@@ -5,8 +5,8 @@
 Build and sign a transaction to send native tokens or ERC-20 tokens. Automatically fetches nonce, gas, and fee data from the network.
 
 ```bash
-npx wooftrade@0.0.11 send -k 0xKEY --to 0xRECIPIENT --amount 1.5 -t 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-npx wooftrade@0.0.11 send -k 0xKEY --to 0xRECIPIENT --amount 100 -t 0xTOKEN_CONTRACT -n bsc
+npx wooftrade@0.0.12 send -k 0xKEY --to 0xRECIPIENT --amount 1.5 -t 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+npx wooftrade@0.0.12 send -k 0xKEY --to 0xRECIPIENT --amount 100 -t 0xTOKEN_CONTRACT -n bsc
 ```
 
 **Options**:
@@ -40,8 +40,8 @@ npx wooftrade@0.0.11 send -k 0xKEY --to 0xRECIPIENT --amount 100 -t 0xTOKEN_CONT
 Broadcast a serialized signed transaction to the network.
 
 ```bash
-npx wooftrade@0.0.11 broadcast -s 0xSERIALIZED_TX
-npx wooftrade@0.0.11 broadcast -s 0xSERIALIZED_TX -n bsc
+npx wooftrade@0.0.12 broadcast -s 0xSERIALIZED_TX
+npx wooftrade@0.0.12 broadcast -s 0xSERIALIZED_TX -n bsc
 ```
 
 **Options**:
@@ -68,8 +68,8 @@ npx wooftrade@0.0.11 broadcast -s 0xSERIALIZED_TX -n bsc
 Get the status of a transaction by hash.
 
 ```bash
-npx wooftrade@0.0.11 tx-status -h 0xTX_HASH
-npx wooftrade@0.0.11 tx-status -h 0xTX_HASH -n bsc
+npx wooftrade@0.0.12 tx-status -h 0xTX_HASH
+npx wooftrade@0.0.12 tx-status -h 0xTX_HASH -n bsc
 ```
 
 **Options**:

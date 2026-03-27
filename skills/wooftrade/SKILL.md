@@ -3,7 +3,7 @@ name: wooftrade
 description: 'Trade tokenized stocks, research financial markets, and perform Ethereum & EVM blockchain operations — swap via 1inch Fusion, check balances, sign & send transactions, and manage wallets across Ethereum and BNB Smart Chain.'
 metadata:
   author: wooftrade
-  version: 0.0.11
+  version: 0.0.12
   homepage: https://www.wooftrade.com
   openclaw:
     requires:
@@ -48,14 +48,14 @@ metadata:
 
 > **🚀 BEFORE YOU BEGIN**
 >
-> 1. **Verify your private key is set**: Run `npx wooftrade@0.0.11 who-am-i` to confirm `WOOFTRADE_PRIVATE_KEY` is properly configured and resolves to the expected address before proceeding with any other command.
-> 2. **No private key?** Use `npx wooftrade@0.0.11 gen-wallet` to generate a new wallet. Save the returned private key to the skill's `.env` file:
+> 1. **Verify your private key is set**: Run `npx wooftrade@0.0.12 who-am-i` to confirm `WOOFTRADE_PRIVATE_KEY` is properly configured and resolves to the expected address before proceeding with any other command.
+> 2. **No private key?** Use `npx wooftrade@0.0.12 gen-wallet` to generate a new wallet. Save the returned private key to the skill's `.env` file:
 >
 >    ```bash
 >    echo "WOOFTRADE_PRIVATE_KEY=0x..." >> .env
 >    ```
 >
->    Then verify with `npx wooftrade@0.0.11 who-am-i` — it should resolve to the expected address. **Important**: Run this command from the same directory where the `.env` file was saved, so `dotenv` can load it automatically.
+>    Then verify with `npx wooftrade@0.0.12 who-am-i` — it should resolve to the expected address. **Important**: Run this command from the same directory where the `.env` file was saved, so `dotenv` can load it automatically.
 >
 >    **⚠️ OWNER RESPONSIBILITY**: Protecting this private key is **entirely your responsibility**. A leaked key grants full, irrevocable control over all funds in the wallet. Use the most up-to-date agentic private key protection mechanisms available to you (e.g. encrypted secret storage, environment variable vaults, OS keychain integration). **Never** store the key in plain text files committed to version control, chat logs, or shared environments.
 >
@@ -87,7 +87,7 @@ metadata:
 ## Invocation
 
 ```
-npx wooftrade@0.0.11 <command> [options]
+npx wooftrade@0.0.12 <command> [options]
 ```
 
 - **Runtime**: Node.js (>=18)

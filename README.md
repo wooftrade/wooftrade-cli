@@ -10,6 +10,8 @@ npx wooftrade@latest <command> [options]
 
 Requires Node.js >= 18.
 
+> **🚫 Trading (swap) functionality is NOT available to U.S. persons.**
+
 ## Authentication
 
 All commands that require a private key accept it via:
@@ -124,7 +126,7 @@ npx wooftrade@latest tx-status -h 0xTX_HASH -n bsc
 
 ### `swap`
 
-Swap tokens via 1inch Fusion. Use `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` for native tokens.
+Swap tokens via 1inch Fusion. Fusion orders are gasless, but token approval transactions require gas. Use `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` for native tokens.
 
 ```bash
 npx wooftrade@latest swap -k 0xKEY --from-token 0xFROM --to-token 0xTO --amount 1.5         # get quote

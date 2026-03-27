@@ -5,7 +5,7 @@
 Generate a new random wallet (private key and address).
 
 ```bash
-npx wooftrade@0.0.11 gen-wallet
+npx wooftrade@0.0.12 gen-wallet
 ```
 
 **Options**: None.
@@ -30,7 +30,7 @@ echo "WOOFTRADE_PRIVATE_KEY=0x..." >> .env
 Then verify the key is correctly saved by running `who-am-i` without the `-k` flag — it should resolve to the expected address:
 
 ```bash
-npx wooftrade@0.0.11 who-am-i
+npx wooftrade@0.0.12 who-am-i
 ```
 
 > **⚠️ OWNER RESPONSIBILITY**: Protecting this private key is **entirely your responsibility**. A leaked key grants full, irrevocable control over all funds in the wallet. Use the most up-to-date agentic private key protection mechanisms available to you (e.g. encrypted secret storage, environment variable vaults, OS keychain integration). **Never** store the key in plain text files committed to version control, chat logs, or shared environments.
@@ -42,9 +42,9 @@ npx wooftrade@0.0.11 who-am-i
 Return the Ethereum address derived from a private key.
 
 ```bash
-npx wooftrade@0.0.11 who-am-i -k 0xKEY
+npx wooftrade@0.0.12 who-am-i -k 0xKEY
 # or
-WOOFTRADE_PRIVATE_KEY=0xKEY npx wooftrade@0.0.11 who-am-i
+WOOFTRADE_PRIVATE_KEY=0xKEY npx wooftrade@0.0.12 who-am-i
 ```
 
 **Options**:
@@ -68,7 +68,7 @@ WOOFTRADE_PRIVATE_KEY=0xKEY npx wooftrade@0.0.11 who-am-i
 Convert an Ethereum address to its ERC-55 checksum format.
 
 ```bash
-npx wooftrade@0.0.11 checksum-address -a 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+npx wooftrade@0.0.12 checksum-address -a 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
 ```
 
 **Options**:
@@ -92,10 +92,10 @@ npx wooftrade@0.0.11 checksum-address -a 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92
 Get native or ERC-20 token balances.
 
 ```bash
-npx wooftrade@0.0.11 get-balance -a 0xADDRESS
-npx wooftrade@0.0.11 get-balance -a 0xADDRESS -n bsc
-npx wooftrade@0.0.11 get-balance -a 0xADDRESS -t 0xTOKEN_CONTRACT
-npx wooftrade@0.0.11 get-balance -a 0xADDRESS --all
+npx wooftrade@0.0.12 get-balance -a 0xADDRESS
+npx wooftrade@0.0.12 get-balance -a 0xADDRESS -n bsc
+npx wooftrade@0.0.12 get-balance -a 0xADDRESS -t 0xTOKEN_CONTRACT
+npx wooftrade@0.0.12 get-balance -a 0xADDRESS --all
 ```
 
 **Options**:
