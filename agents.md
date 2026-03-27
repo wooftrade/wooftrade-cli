@@ -750,6 +750,8 @@ Note: `approvalTxHash` is non-null only when an ERC-20 token approval transactio
 
 > **Important**: After receiving an `orderHash`, agents **must** periodically call `swap-order-status` to poll the order until it reaches a terminal state (`filled`, `expired`, or `cancelled`). Poll every 10–15 seconds. Do not assume the swap is complete just because the order was submitted — Fusion orders are filled asynchronously by resolvers.
 
+> **RWA Tokens**: Before swapping tokenized real-world assets (RWA), use `rwa-market` to look up the correct token contract address and verify the token is currently tradable before passing it to `--from-token` or `--to-token`.
+
 #### Example
 
 ```bash
