@@ -53,7 +53,7 @@ metadata:
 >    echo "WOOFTRADE_PRIVATE_KEY=0x..." >> .env
 >    ```
 >
->    Then verify with `npx wooftrade@0.0.11 who-am-i` — it should resolve to the expected address.
+>    Then verify with `npx wooftrade@0.0.11 who-am-i` — it should resolve to the expected address. **Important**: Run this command from the same directory where the `.env` file was saved, so `dotenv` can load it automatically.
 >
 >    **⚠️ OWNER RESPONSIBILITY**: Protecting this private key is **entirely your responsibility**. A leaked key grants full, irrevocable control over all funds in the wallet. Use the most up-to-date agentic private key protection mechanisms available to you (e.g. encrypted secret storage, environment variable vaults, OS keychain integration). **Never** store the key in plain text files committed to version control, chat logs, or shared environments.
 >
