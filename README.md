@@ -1,6 +1,6 @@
 # wooftrade
 
-A non-interactive CLI tool for Ethereum and EVM-compatible blockchain operations, designed for AI agent consumption. Supports signing, sending, broadcasting transactions, token swaps via 1inch Fusion, balance queries, and wallet generation.
+A non-interactive CLI tool for Ethereum and EVM-compatible blockchain operations and financial market data, designed for AI agent consumption. Supports signing, sending, broadcasting transactions, token swaps via 1inch Fusion, balance queries, wallet generation, and market research (stocks, indexes, earnings, congress trades, news, RWA).
 
 ## Installation
 
@@ -40,6 +40,14 @@ Get the address derived from a private key.
 
 ```bash
 npx wooftrade@latest who-am-i -k 0xYOUR_PRIVATE_KEY
+```
+
+### `checksum-address`
+
+Convert an Ethereum address to its ERC-55 checksum format.
+
+```bash
+npx wooftrade@latest checksum-address -a 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
 ```
 
 ### `sign-message`
@@ -132,6 +140,89 @@ Check the status of a 1inch Fusion swap order.
 npx wooftrade@latest swap-order-status -k 0xKEY --order-hash 0xORDER_HASH
 ```
 
+### `stock`
+
+Get comprehensive stock data (profile, price, metrics, ratings, news, congress trades).
+
+```bash
+npx wooftrade@latest stock -s AAPL
+```
+
+### `price-chart`
+
+Get historical price chart data for a stock.
+
+```bash
+npx wooftrade@latest price-chart -s AAPL
+npx wooftrade@latest price-chart -s AAPL -p 3M    # 1W, 1M, 3M, 6M, YTD, 1YR, 5YR, All
+```
+
+### `market-indexes`
+
+Get major market indexes (S&P 500, Dow, NASDAQ, VIX, etc.).
+
+```bash
+npx wooftrade@latest market-indexes
+```
+
+### `market-status`
+
+Get RWA market open/close status.
+
+```bash
+npx wooftrade@latest market-status
+```
+
+### `earnings`
+
+Get upcoming earnings calendar.
+
+```bash
+npx wooftrade@latest earnings
+npx wooftrade@latest earnings -d 14    # look ahead 14 days
+```
+
+### `congress-members`
+
+Get all current U.S. Congress members.
+
+```bash
+npx wooftrade@latest congress-members
+```
+
+### `congress-trades`
+
+Get stock trades by a specific Congress member.
+
+```bash
+npx wooftrade@latest congress-trades --first-name Nancy --last-name Pelosi
+```
+
+### `news`
+
+Get latest financial news headlines.
+
+```bash
+npx wooftrade@latest news
+```
+
+### `rwa-market`
+
+Get Ondo Finance tokenized asset (RWA) market data.
+
+```bash
+npx wooftrade@latest rwa-market
+npx wooftrade@latest rwa-market -s NVDA    # filter by symbol
+```
+
+### `submit-market-analysis`
+
+Submit a signed market analysis for a stock.
+
+```bash
+npx wooftrade@latest submit-market-analysis -s AAPL -a "Detailed analysis text here..." --sentiment bullish
+```
+
 ## Output Format
 
 **Success** messages are written to `stdout`:
@@ -152,12 +243,13 @@ Error codes: `INVALID_INPUT`, `EXECUTION_FAILED`, `TIMEOUT`, `UNKNOWN`.
 ## Development
 
 ```bash
-yarn build          # compile to dist/
-yarn dev            # run from source
-yarn test           # run tests
-yarn format         # format with prettier
-yarn format:check   # check formatting
-yarn clean          # remove dist/
+yarn build              # compile to dist/
+yarn dev                # run from source
+yarn test               # run tests
+yarn format             # format with prettier
+yarn format:check       # check formatting
+yarn clean              # remove dist/
+yarn version:update     # update version across all files
 ```
 
 ## Agent Integration
