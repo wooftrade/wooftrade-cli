@@ -41,7 +41,7 @@ metadata:
 > **📋 ADDRESS FORMATTING RULES**
 >
 > 1. **Always use ERC-55 checksum addresses** when passing addresses to any command (wallet addresses, token contract addresses, recipient addresses, etc.).
-> 2. **If you do not know the correct checksum**, use **all lowercase** addresses (e.g. `0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2` instead of guessing the mixed-case checksum).
+> 2. **If you do not know the correct checksum**, use the `checksum-address` command to convert it, or use **all lowercase** addresses (e.g. `0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2` instead of guessing the mixed-case checksum).
 > 3. **Never guess a token contract address.** If you are unsure of the correct token contract address, **always ask the user** to provide it. Do not fabricate or assume token addresses.
 
 > **🚀 BEFORE YOU BEGIN**
@@ -72,7 +72,7 @@ metadata:
 | File                     | Description                                                                                                                                                  | URL                                       |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
 | **SKILL.md** (this file) | Overview, setup, authentication, error handling                                                                                                              | https://www.wooftrade.com/skill.md        |
-| **WALLET.md**            | `gen-wallet`, `who-am-i`, `get-balance`                                                                                                                      | https://www.wooftrade.com/wallet.md       |
+| **WALLET.md**            | `gen-wallet`, `who-am-i`, `checksum-address`, `get-balance`                                                                                                  | https://www.wooftrade.com/wallet.md       |
 | **SIGNING.md**           | `sign-message`, `sign`, `sign-typed-data`, `sign-transaction`                                                                                                | https://www.wooftrade.com/signing.md      |
 | **TRANSACTIONS.md**      | `send`, `broadcast`, `tx-status`                                                                                                                             | https://www.wooftrade.com/transactions.md |
 | **SWAPS.md**             | `swap`, `swap-order-status` (1inch Fusion)                                                                                                                   | https://www.wooftrade.com/swaps.md        |
@@ -148,6 +148,7 @@ For `TIMEOUT` and `EXECUTION_FAILED` errors, retry up to 2 times with exponentia
 | ------------------------ | ------------------------------------ | --------------- |
 | `gen-wallet`             | Generate a new random wallet         | WALLET.md       |
 | `who-am-i`               | Get address from private key         | WALLET.md       |
+| `checksum-address`       | Convert address to ERC-55 checksum   | WALLET.md       |
 | `get-balance`            | Get native or ERC-20 token balances  | WALLET.md       |
 | `sign-message`           | EIP-191 personal sign                | SIGNING.md      |
 | `sign`                   | Raw hash signing (secp256k1)         | SIGNING.md      |

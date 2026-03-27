@@ -63,6 +63,30 @@ WOOFTRADE_PRIVATE_KEY=0xKEY npx wooftrade@0.0.10 who-am-i
 
 ---
 
+## `checksum-address`
+
+Convert an Ethereum address to its ERC-55 checksum format.
+
+```bash
+npx wooftrade@0.0.10 checksum-address -a 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+```
+
+**Options**:
+
+| Flag                      | Required | Description                                  |
+| ------------------------- | -------- | -------------------------------------------- |
+| `-a, --address <address>` | Yes      | Ethereum address (0x-prefixed hex string).   |
+
+**Output (stdout)**:
+
+```json
+{
+  "address": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+}
+```
+
+---
+
 ## `get-balance`
 
 Get native or ERC-20 token balances.

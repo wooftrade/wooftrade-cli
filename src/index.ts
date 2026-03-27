@@ -15,6 +15,7 @@ import { txStatus } from './commands/tx-status';
 import { getSwapQuote, submitSwapOrder } from './commands/swap';
 import { swapOrderStatus } from './commands/swap-order-status';
 import { genWallet } from './commands/gen-wallet';
+import { checksumAddress } from './commands/checksum-address';
 import {
   getStock,
   getPriceChart,
@@ -600,6 +601,25 @@ program
       console.error(
         `\nTo use this wallet, either:\n  1. Pass it via -k flag: -k <private_key>\n  2. Save it to your environment: export WOOFTRADE_PRIVATE_KEY=<private_key>`,
       );
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('checksum-address')
+  .description('Convert an Ethereum address to its ERC-55 checksum format')
+  .requiredOption(
+    '-a, --address <address>',
+    'Ethereum address (0x-prefixed hex string)',
+  )
+  .action((options: { address: string }) => {
+    try {
+      const result = checksumAddress({ address: options.address });
+      console.log(`WOOFTRADE_OK: Address checksummed successfully`);
+      console.log(JSON.stringify(result, null, 2));
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       console.error(`WOOFTRADE_ERR: EXECUTION_FAILED \u2014 ${message}`);

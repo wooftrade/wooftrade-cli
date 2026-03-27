@@ -17,7 +17,8 @@
     "publish:live": "yarn prepublishOnly && yarn npm publish --access public",
     "test": "vitest run --exclude 'dist/**'",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "version:update": "bash scripts/update-version.sh"
   },
   "keywords": [],
   "license": "MIT",
